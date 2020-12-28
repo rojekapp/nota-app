@@ -43,12 +43,27 @@ app.get('/api/drop',async (req,res)=>{
     },res)
 })
 
-app.post('/api/nota/',async (req,res)=>{
+app.post('/api/nota',async (req,res)=>{
    
     const tanggal = req.body.tanggal;
     wthDB(async(db) => {
         
         const pep = await db.collection("nota").find({tanggal:tanggal}).toArray();
+       
+       
+        res.status(200).json(pep)
+    },res)
+});
+
+app.post('/api/delete',async (req,res)=>{
+   
+    const nota_list = req.body.nota;
+
+    wthDB(async(db) => {
+        
+var myquery = { nota: { $in: nota_list } };
+  
+        const pep = await db.collection("nota").deleteMany(myquery);
        
        
         res.status(200).json(pep)
